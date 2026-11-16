@@ -6,11 +6,11 @@ export default function Register() {
         <View style={styles.register}>
             <Text style={styles.register_heading}>Register  </Text>
             <Text style={styles.labels}>Email address</Text>
-            <TextInput keyboardType="email-address" placeholder="test@example.com" placeholderTextColor={'gray'} autoCapitalize="none" />
+            <TextInput style={styles.input} keyboardType="email-address" placeholder="test@example.com" placeholderTextColor={'gray'} autoCapitalize="none" />
             <Text style={styles.labels}>Username</Text>
-            <TextInput placeholder="Username" placeholderTextColor={'gray'} />
+            <TextInput  style={styles.input} placeholder="Username" placeholderTextColor={'gray'} />
             <Text style={styles.labels}>Create Password</Text>
-            <TextInput placeholder="password" placeholderTextColor={'gray'} />
+            <TextInput style={styles.input} placeholder="password" placeholderTextColor={'gray'} />
             <Pressable onPress={() => console.log('Registered!')}>
                 <Text style={styles.button}>Register</Text>
             </Pressable>
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     input: {
-        borderColor: '#EDEDED',
+        borderColor: '#941818',
         borderWidth: 1,
         borderRadius: 9
     },
