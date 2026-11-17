@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 import Register from "./authenticationPages/register";
+import Login from "./authenticationPages/login";
 
 export default function Home() {
   return (
     <View style={styles.container}>
       <Text>Notes Application</Text>
           <Register/>
+          <Login/>
     </View>
 
   )

@@ -14,19 +14,19 @@ export default function Register() {
     return (
         <View style={styles.register}>
             <Text style={styles.register_heading}>Register</Text>
-           <KeyboardAvoidingView behavior="padding">
-            <CustomInput name={'Email Address'} onChange={setEmail} />
-            <CustomInput name="Username" onChange={setUsername} />
-            <CustomInput name="Create Password" onChange={setPassword} />
-            <View style={styles.registerAndLogin}>
-            <Pressable onPress={() => console.log("Register button pressed")}>
-                <Text style={styles.button}>Register</Text>
-            </Pressable>
-            <View style={styles.login}>
-                <Text style={styles.login_register}>Already have account?</Text>
-                <Link href='./login' style={styles.login_register_link}>Login</Link>
-            </View>
-            </View>
+            <KeyboardAvoidingView behavior="padding">
+                <CustomInput name={'Email Address'} onChange={setEmail} />
+                <CustomInput name={'Username'} onChange={setUsername} />
+                <CustomInput name={'Create Password'} onChange={setPassword} />
+                <View style={styles.registerAndLogin}>
+                    <Pressable onPress={() => console.log("Register button pressed")}>
+                        <Text style={styles.button}>Register</Text>
+                    </Pressable>
+                    <View style={styles.login}>
+                        <Text style={styles.login_register}>Already have account?</Text>
+                        <Link href="/authenticationPages/login" style={styles.login_register_link}>Login</Link>
+                    </View>
+                </View>
             </KeyboardAvoidingView>
         </View>
     )
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     register: {
         backgroundColor: '#FDFDFD',
         justifyContent: 'center',
-        flex:1,
-        padding:20,
+        flex: 1,
+        padding: 20,
 
     },
     register_heading: {
@@ -45,12 +45,14 @@ const styles = StyleSheet.create({
     },
     button: {
         fontSize: 18,
-        backgroundColor:'black',
-        color:'#FDFDFD',
-        textAlign:'center',
-        borderRadius:8,
-        borderWidth:1,
-        width:250
+        backgroundColor: 'black',
+        color: '#FDFDFD',
+        textAlign: 'center',
+        borderRadius: 8,
+        width: 250,
+        height: 40,
+        paddingTop:10,
+        justifyContent:'center'
     },
     login: {
         alignItems: 'center',
@@ -63,9 +65,11 @@ const styles = StyleSheet.create({
     },
     login_register_link: {
         textDecorationLine: 'underline',
-        color:'blue'
+        color: 'blue'
     },
-    registerAndLogin:{
-        gap:15
+    registerAndLogin: {
+        gap: 15,
+        justifyContent:'center',
+        padding:20
     }
 })
