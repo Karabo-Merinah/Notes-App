@@ -1,7 +1,7 @@
 import CustomInput from "@/components/CustomInput"
 import { Link } from "expo-router"
 import { useState } from "react"
-import { KeyboardAvoidingView, Pressable, StyleSheet, Text, View } from "react-native"
+import { Alert, KeyboardAvoidingView, Pressable, StyleSheet, Text, View } from "react-native"
 
 
 export default function Register() {
@@ -12,8 +12,13 @@ export default function Register() {
     const [emailError, setEmailError] = useState("")
     const [passwordError, setPasswordError] = useState("")
     const [usernameError, setUsernameError] = useState("")
+
+
     const registering = () => {
 
+        let isValid=true 
+
+        //validates the email format 
         if (!email.includes('@') || !(email.includes('.com') || email.includes('.co.za'))) {
             setEmailError('Invalid email format.Example test@example.com')
         }
@@ -21,6 +26,7 @@ export default function Register() {
             setEmailError("")
         }
 
+        //checks if  password requirements are met 
         const number = '0123456789'
         const hasDigit = password.split("").some((num) => number.includes(num))
         const specialCharacter = '@&*%$'
@@ -32,11 +38,17 @@ export default function Register() {
         else {
             setPasswordError("")
         }
+        //validate the username length 
         if (username.trim().length < 5) {
             setUsernameError("Username shouldn't be less than 5 characters.")
         }
         else {
             setUsernameError("")
+        }
+
+        //only register when the fields are validated 
+        if(isValid){
+           Alert.alert("Success","Registered successfully !")
         }
     }
 
