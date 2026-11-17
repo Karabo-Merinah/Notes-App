@@ -1,6 +1,8 @@
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Asterisk } from "lucide-react-native"
 import { useState } from "react"
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native"
+
 
 export default function addNotes() {
 
@@ -39,14 +41,52 @@ export default function addNotes() {
             setNotesError("")
         }
         if (isValid) {
-            Alert.alert("Success", "You have successfully added the note.")
+          saveNote()
+        }
+    }
+
+    const saveNote=async()=>{
+        try{
+            //get saved notes
+            const storedNotes=await AsyncStorage.getItem("notes")
+
+        //if notes exist convert them into array,if not use empty array 
+        let allNotes=[]
+        if(storedNotes!==null){
+            allNotes=JSON.parse(storedNotes)
+        }
+
+            //creating note 
+            const newNote={id:Date.now().toString(),
+                title:title.trim(),
+                content:notes.trim(),
+                category:category.trim(),
+                createdAt:new Date().toISOString()
+            }
+                //add the new note to the existing notes
+                allNotes.push(newNote)
+                //save the update 
+                await AsyncStorage.setItem("notes",JSON.stringify(allNotes))
+
+                //show success message only after saving 
+                Alert.alert("Success","You have successfully added the note.")
+
+                //clear the form after submitting
+                setTitle("")
+                setCategory("")
+                setNotes("")
+            }
+            catch(error){
+                console.log(error)
+                Alert.alert("Error","Could not save ")
+
         }
     }
 
     return (
         <View style={styles.form}>
             <Text style={styles.formDescription}>Save your notes for later !</Text>
-            <Text style={styles.formLabels}>Title</Text><Asterisk size={16} color='red' />
+            <Text style={styles.formLabels}>Title</Text>
             <TextInput style={styles.formInput} value={title} onChangeText={setTitle} placeholder="Title(optional)" placeholderTextColor={'#717171'} />
             {titleError !== "" && (
                 <Text style={styles.error}>{titleError}</Text>
