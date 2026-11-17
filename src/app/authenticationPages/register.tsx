@@ -6,20 +6,58 @@ import { KeyboardAvoidingView, Pressable, StyleSheet, Text, View } from "react-n
 
 export default function Register() {
 
-    // Store the values entered by the user
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [emailError, setEmailError] = useState("")
+    const [passwordError, setPasswordError] = useState("")
+    const [usernameError, setUsernameError] = useState("")
+    const registering = () => {
+
+        if (!email.includes('@') || !(email.includes('.com') || email.includes('.co.za'))) {
+            setEmailError('Invalid email format.Example test@example.com')
+        }
+        else {
+            setEmailError("")
+        }
+
+        const number = '0123456789'
+        const hasDigit = password.split("").some((num) => number.includes(num))
+        const specialCharacter = '@&*%$'
+        const hasSpecialCharacter = password.split("").some((char) => specialCharacter.includes(char))
+
+        if (password.length < 8 || !hasDigit || !hasSpecialCharacter) {
+            setPasswordError("Password should contain at least minimum of 8 characters,digit and special character.")
+        }
+        else {
+            setPasswordError("")
+        }
+        if (username.trim().length < 5) {
+            setUsernameError("Username shouldn't be less than 5 characters.")
+        }
+        else {
+            setUsernameError("")
+        }
+    }
 
     return (
         <View style={styles.register}>
             <Text style={styles.register_heading}>Register</Text>
             <KeyboardAvoidingView behavior="padding">
                 <CustomInput name={'Email Address'} onChange={setEmail} />
+                {emailError !== "" && (
+                    <Text style={styles.errors}>{emailError}</Text>
+                )}
                 <CustomInput name={'Username'} onChange={setUsername} />
+                {usernameError !== "" && (
+                    <Text style={styles.errors}>{usernameError}</Text>
+                )}
                 <CustomInput name={'Create Password'} onChange={setPassword} />
+                {passwordError !== "" && (
+                    <Text style={styles.errors}>{passwordError}</Text>
+                )}
                 <View style={styles.registerAndLogin}>
-                    <Pressable onPress={() => console.log("Register button pressed")}>
+                    <Pressable onPress={registering}>
                         <Text style={styles.button}>Register</Text>
                     </Pressable>
                     <View style={styles.login}>
@@ -37,11 +75,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flex: 1,
         padding: 20,
+        borderWidth: 1,
+        color: '#EDEDED',
+        borderRadius: 9
 
     },
     register_heading: {
         textAlign: 'center',
-        fontSize: 20
+        fontSize: 20,
+        marginTop: 10
     },
     button: {
         fontSize: 18,
@@ -51,8 +93,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         width: 250,
         height: 40,
-        paddingTop:10,
-        justifyContent:'center'
+        paddingTop: 10,
+        justifyContent: 'center'
     },
     login: {
         alignItems: 'center',
@@ -69,7 +111,10 @@ const styles = StyleSheet.create({
     },
     registerAndLogin: {
         gap: 15,
-        justifyContent:'center',
-        padding:20
+        justifyContent: 'center',
+        padding: 20
+    },
+    errors: {
+        color: 'red'
     }
 })
