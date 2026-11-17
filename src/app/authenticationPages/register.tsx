@@ -73,8 +73,8 @@ export default function Register() {
                         <Text style={styles.button}>Register</Text>
                     </Pressable>
                     <View style={styles.login}>
-                        <Text style={styles.login_register}>Already have account?</Text>
-                        <Link href="/authenticationPages/login" style={styles.login_register_link}>Login</Link>
+                        <Text style={styles.login_register}>Already have account? </Text>
+                        <Link href="/authenticationPages/login" style={styles.login_register_link}> Login</Link>
                     </View>
                 </View>
             </KeyboardAvoidingView>

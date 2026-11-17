@@ -21,8 +21,8 @@ export default function Login() {
                         <Text style={styles.button}>Login </Text>
                     </Pressable>
                     <View style={styles.register_login}>
-                        <Text style={styles.register}>Don't have account yet?</Text>
-                        <Link href="/authenticationPages/register" style={styles.register_style}>Sign up </Link>
+                        <Text style={styles.register}>Don't have account yet? </Text>
+                        <Link href="/authenticationPages/register" style={styles.register_style}> Sign up </Link>
                     </View>
                 </View>
             </View>
