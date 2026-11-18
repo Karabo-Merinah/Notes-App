@@ -41,44 +41,45 @@ export default function addNotes() {
             setNotesError("")
         }
         if (isValid) {
-          saveNote()
+            saveNote()
         }
     }
 
-    const saveNote=async()=>{
-        try{
+    const saveNote = async () => {
+        try {
             //get saved notes
-            const storedNotes=await AsyncStorage.getItem("notes")
+            const storedNotes = await AsyncStorage.getItem("notes")
 
-        //if notes exist convert them into array,if not use empty array 
-        let allNotes=[]
-        if(storedNotes!==null){
-            allNotes=JSON.parse(storedNotes)
-        }
+            //if notes exist convert them into array,if not use empty array 
+            let allNotes = []
+            if (storedNotes !== null) {
+                allNotes = JSON.parse(storedNotes)
+            }
 
             //creating note 
-            const newNote={id:Date.now().toString(),
-                title:title.trim(),
-                content:notes.trim(),
-                category:category.trim(),
-                createdAt:new Date().toISOString()
+            const newNote = {
+                id: Date.now().toString(),
+                title: title.trim(),
+                content: notes.trim(),
+                category: category.trim(),
+                createdAt: new Date().toISOString()
             }
-                //add the new note to the existing notes
-                allNotes.push(newNote)
-                //save the update 
-                await AsyncStorage.setItem("notes",JSON.stringify(allNotes))
+            //add the new note to the existing notes
+            allNotes.push(newNote)
+            //save the update 
+            await AsyncStorage.setItem("notes", JSON.stringify(allNotes))
 
-                //show success message only after saving 
-                Alert.alert("Success","You have successfully added the note.")
+            //show success message only after saving 
+            Alert.alert("Success", "You have successfully added the note.")
 
-                //clear the form after submitting
-                setTitle("")
-                setCategory("")
-                setNotes("")
-            }
-            catch(error){
-                console.log(error)
-                Alert.alert("Error","Could not save ")
+            //clear the form after submitting
+            setTitle("")
+            setCategory("")
+            setNotes("")
+        }
+        catch (error) {
+            console.log(error)
+            Alert.alert("Error", "Could not save ")
 
         }
     }
@@ -91,12 +92,13 @@ export default function addNotes() {
             {titleError !== "" && (
                 <Text style={styles.error}>{titleError}</Text>
             )}
-            <Text style={styles.formLabels}>Notes</Text><Asterisk size={16} color='red' />
+            <Text style={styles.formLabels}>Notes <Asterisk size={10} color='red' /></Text>
             <TextInput placeholder="Write your notes here " placeholderTextColor={'#717171'} value={notes} onChangeText={setNotes} multiline />
             {notesError !== "" && (
                 <Text style={styles.error}>{notesError}</Text>
             )}
-            <Text style={styles.formLabels}>Category</Text><Asterisk size={16} color='red' />
+            <View style={styles.category_button}>
+            <Text style={styles.formLabels}>Category <Asterisk size={10} color='red' /></Text>
             <TextInput style={styles.formInput} value={category} onChangeText={setCategory} placeholder="e.g Work,Study,Personal" placeholderTextColor={'#717171'} />
             {categoryError !== "" && (
                 <Text style={styles.error}>{categoryError}</Text>
@@ -104,6 +106,7 @@ export default function addNotes() {
             <Pressable style={styles.button} onPress={formValidation}>
                 <Text style={styles.saveButton}>SAVE NOTES</Text>
             </Pressable>
+            </View>
         </View>
     )
 
@@ -111,22 +114,37 @@ export default function addNotes() {
 
 const styles = StyleSheet.create({
     form: {
-
+        justifyContent: 'center',
+        marginTop: 10,
+        padding: 20
     },
     formDescription: {
-
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 350,
+        marginBottom: 20
     },
     formLabels: {
-
+        fontSize: 16
     },
     formInput: {
-
+    borderRadius:9,
+    borderWidth:1
     },
     button: {
 
     },
     saveButton: {
-
+        backgroundColor: 'black',
+        color: '#FDFDFD',
+        textAlign: 'center',
+        borderRadius: 9,
+        maxWidth:250,
+        height:40,
+        padding:10
+    },
+    category_button:{
+     gap:20
     },
     error: {
         color: 'red'

@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View } from "react-native";
-import Register from "./authenticationPages/register";
-import Login from "./authenticationPages/login";
+import { StyleSheet, View } from "react-native";
+import AddNotes from "./notes/addNotes";
+import GetNotes from "./notes/gettingNotes";
 
 export default function Home() {
   return (
+    
     <View style={styles.container}>
-      <Text>Notes Application</Text>
-          <Register/>
-          <Login/>
+          <AddNotes/>
+          <GetNotes/>
     </View>
 
   )
