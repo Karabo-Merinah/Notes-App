@@ -30,17 +30,25 @@ export default function getNotes() {
         try {
             //removes the id that matches with the received one
             const updatedList = savedNotes.filter((note) => note.id !== id)
-            setSavedNotes(updatedList)
+
 
             //stores the updated list back to the storage by converting the list back to string
             await AsyncStorage.setItem("notes", JSON.stringify(updatedList))
+
+            //show the updated notes
+            setSavedNotes(updatedList)
         }
         catch (error) {
             console.log(error)
             Alert.alert("Error", "Could not delete the note.")
         }
     }
-
+    const showAlert = (id: string) => {
+        Alert.alert('Confirmation ', 'Are you sure you want to delete this note?', [
+            { text: 'Cancel', style: 'cancel', onPress: () => console.log('Cancel is pressed') },
+            { text: 'Delete', style: 'destructive', onPress: () => deleteNote(id) }
+        ])
+    }
 
     useEffect(() => {
         fetchNotes()
@@ -57,11 +65,11 @@ export default function getNotes() {
                     <Text>{item.content}</Text>
                     <Text>{item.category}</Text>
                     <Text>{new Date(item.createdAt).toLocaleDateString()}</Text>
-                       <Pressable onPress={()=>deleteNote(item.id)}>
-                    <Text style={styles.button}>Delete a note</Text>
-                </Pressable>
+                    <Pressable style={styles.deletebutton} onPress={() => showAlert(item.id)}>
+                        <Text style={styles.deleteText}>Delete a note</Text>
+                    </Pressable>
                 </View>
-             
+
             )}
                 ListEmptyComponent={
                     <View>
@@ -81,5 +89,17 @@ const styles = StyleSheet.create({
     },
     notes: {
 
+    },
+    deletebutton: {
+        backgroundColor: "red",
+        padding: 12,
+        borderRadius: 8,
+        marginTop: 10,
+        alignItems: "center"
+    },
+    deleteText: {
+        color: "#FDFDFD",
+        fontSize: 16,
+        fontWeight: "bold"
     }
 })
