@@ -12,7 +12,9 @@ export default function getNotes() {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [category, setCategory] = useState("")
-
+    const [contentError, setContentError] = useState("")
+    const [categoryError, setCategoryError] = useState("")
+    const [titleError, setTitleError] = useState("")
 
     //saved notes from storage
     const fetchNotes = async () => {
@@ -70,6 +72,10 @@ export default function getNotes() {
             setContent(findNote.content)
             setCategory(findNote.category)
 
+            setTitleError("")
+            setCategoryError("")
+            setContentError("")
+
         }
         catch (error) {
             console.log(error)
@@ -83,6 +89,62 @@ export default function getNotes() {
             { text: 'Cancel', style: 'cancel', onPress: () => console.log('Cancel is pressed') },
             { text: 'Delete', style: 'destructive', onPress: () => deleteNote(id) }
         ])
+    }
+
+    const saveNotesChanges = async () => {
+        try {
+            let isValid = true
+            //validate the updated note information 
+            if (content.trim() === "" || content.length > 500) {
+                setContentError("Content of the note is required and must maximum of 500 characters.")
+                isValid = false
+            }
+            else {
+                setContentError("")
+            }
+            if (category.trim() === "") {
+                setCategoryError("Category of the note is required.")
+                isValid = false
+            }
+            else {
+                setCategoryError("")
+            }
+            if (title.trim() !== "" && title.length > 50) {
+                setTitleError("Title should not exceed 50 characters.")
+                isValid = false
+            }
+            else {
+                setTitleError("")
+            }
+            //stop saving the data when it is invalid
+            if (!isValid) {
+                return
+            }
+            //update the selected note 
+            const updateNotes = savedNotes.map((note) => {
+                if (note.id === findId) {
+                    return {
+                        ...note, title: title.trim(),
+                        content: content.trim(), category: category.trim()
+                    }
+                }
+                //unchanged note remain the same 
+                return note
+            })
+
+            //save the updated notes in storage 
+            await AsyncStorage.setItem("notes", JSON.stringify(updateNotes))
+            //display the updated notes
+            setSavedNotes(updateNotes)
+            //close the editing form 
+            setFindId("")
+
+            Alert.alert("Success", "Note updated successfully.")
+        }
+        catch (error) {
+            console.log(error)
+            Alert.alert("Error", "Could not save changes.")
+        }
     }
     //retrive saved notes when the screen is displayed
 
@@ -105,10 +167,22 @@ export default function getNotes() {
                         <View>
                             <Text>Title</Text>
                             <TextInput value={title} onChangeText={setTitle} style={styles.input} />
+                            {titleError !== "" && (
+                                <Text style={styles.error}>{titleError}</Text>
+                            )}
                             <Text>Content</Text>
                             <TextInput value={content} onChangeText={setContent} multiline style={styles.input} />
+                            {contentError !== "" && (
+                                <Text style={styles.error}>{contentError}</Text>
+                            )}
                             <Text>Category</Text>
                             <TextInput value={category} onChangeText={setCategory} multiline style={styles.input} />
+                            {categoryError !== "" && (
+                                <Text style={styles.error}>{categoryError}</Text>
+                            )}
+                            <Pressable style={styles.editButton} onPress={saveNotesChanges}>
+                                <Text style={styles.editText}>Save Changes</Text>
+                            </Pressable>
                             <Pressable onPress={() => setFindId("")}>
                                 <Text>Cancel</Text>
                             </Pressable>
@@ -168,5 +242,8 @@ const styles = StyleSheet.create({
     },
     editText: {
 
+    },
+    error: {
+        color: 'red'
     }
 })
