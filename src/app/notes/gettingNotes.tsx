@@ -1,6 +1,6 @@
 import type { Note } from "@/types/notes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SquarePen } from "lucide-react-native";
+import { StickyNoteX } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import AddNotes from "./addNotes";
@@ -24,6 +24,24 @@ export default function getNotes() {
 
         }
     }
+
+    const deleteNote = async (id: string) => {
+
+        try {
+            //removes the id that matches with the received one
+            const updatedList = savedNotes.filter((note) => note.id !== id)
+            setSavedNotes(updatedList)
+
+            //stores the updated list back to the storage by converting the list back to string
+            await AsyncStorage.setItem("notes", JSON.stringify(updatedList))
+        }
+        catch (error) {
+            console.log(error)
+            Alert.alert("Error", "Could not delete the note.")
+        }
+    }
+
+
     useEffect(() => {
         fetchNotes()
     }, [])
@@ -39,12 +57,16 @@ export default function getNotes() {
                     <Text>{item.content}</Text>
                     <Text>{item.category}</Text>
                     <Text>{new Date(item.createdAt).toLocaleDateString()}</Text>
+                       <Pressable onPress={()=>deleteNote(item.id)}>
+                    <Text style={styles.button}>Delete a note</Text>
+                </Pressable>
                 </View>
+             
             )}
                 ListEmptyComponent={
                     <View>
                         <Text style={styles.notes}>You currently have no notes saved.</Text>
-                        <SquarePen size={20} />
+                        <StickyNoteX size={100} aria-label="delete" />
                         <AddNotes />
                     </View>
                 }

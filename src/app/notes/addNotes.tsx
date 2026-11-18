@@ -84,6 +84,7 @@ export default function addNotes() {
         }
     }
 
+
     return (
         <View style={styles.form}>
             <Text style={styles.formDescription}>Save your notes for later !</Text>
