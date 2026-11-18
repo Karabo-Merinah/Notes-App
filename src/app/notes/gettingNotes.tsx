@@ -1,8 +1,9 @@
 import type { Note } from "@/types/notes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SquarePen } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { Alert, View, StyleSheet, FlatList, Pressable, Text } from "react-native";
-
+import { Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import AddNotes from "./addNotes";
 
 export default function getNotes() {
 
@@ -40,6 +41,13 @@ export default function getNotes() {
                     <Text>{new Date(item.createdAt).toLocaleDateString()}</Text>
                 </View>
             )}
+                ListEmptyComponent={
+                    <View>
+                        <Text style={styles.notes}>You currently have no notes saved.</Text>
+                        <SquarePen size={20} />
+                        <AddNotes />
+                    </View>
+                }
             />
         </View>
     )

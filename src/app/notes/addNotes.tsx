@@ -98,14 +98,14 @@ export default function addNotes() {
                 <Text style={styles.error}>{notesError}</Text>
             )}
             <View style={styles.category_button}>
-            <Text style={styles.formLabels}>Category <Asterisk size={10} color='red' /></Text>
-            <TextInput style={styles.formInput} value={category} onChangeText={setCategory} placeholder="e.g Work,Study,Personal" placeholderTextColor={'#717171'} />
-            {categoryError !== "" && (
-                <Text style={styles.error}>{categoryError}</Text>
-            )}
-            <Pressable style={styles.button} onPress={formValidation}>
-                <Text style={styles.saveButton}>SAVE NOTES</Text>
-            </Pressable>
+                <Text style={styles.formLabels}>Category <Asterisk size={10} color='red' /></Text>
+                <TextInput style={styles.formInput} value={category} onChangeText={setCategory} placeholder="e.g Work,Study,Personal" placeholderTextColor={'#717171'} />
+                {categoryError !== "" && (
+                    <Text style={styles.error}>{categoryError}</Text>
+                )}
+                <Pressable style={styles.button} onPress={formValidation}>
+                    <Text style={styles.saveButton}>SAVE NOTES</Text>
+                </Pressable>
             </View>
         </View>
     )
@@ -128,8 +128,8 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     formInput: {
-    borderRadius:9,
-    borderWidth:1
+        borderRadius: 9,
+        borderWidth: 1
     },
     button: {
 
@@ -139,12 +139,12 @@ const styles = StyleSheet.create({
         color: '#FDFDFD',
         textAlign: 'center',
         borderRadius: 9,
-        maxWidth:250,
-        height:40,
-        padding:10
+        maxWidth: 250,
+        height: 40,
+        padding: 10
     },
-    category_button:{
-     gap:20
+    category_button: {
+        gap: 20
     },
     error: {
         color: 'red'
