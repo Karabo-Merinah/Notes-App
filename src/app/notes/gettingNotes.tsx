@@ -43,6 +43,22 @@ export default function getNotes() {
             Alert.alert("Error", "Could not delete the note.")
         }
     }
+
+    const updateNote=async(id:string)=>{
+        try{
+            //find the notes using the provided id 
+            const findNote=savedNotes.find((note)=>note.id===id)
+
+            if(!findNote){
+                Alert.alert("Error","Could not find the note.")
+                return
+            }
+        }
+        catch(error){
+            console.log(error)
+            Alert.alert("Error","Could not update the note ")
+        }
+    }
     const showAlert = (id: string) => {
         Alert.alert('Confirmation ', 'Are you sure you want to delete this note?', [
             { text: 'Cancel', style: 'cancel', onPress: () => console.log('Cancel is pressed') },
