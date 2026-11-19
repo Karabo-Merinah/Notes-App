@@ -1,13 +1,13 @@
 import { StyleSheet, View } from "react-native";
-import AddNotes from "./notes/addNotes";
-import GetNotes from "./notes/gettingNotes";
+import HomePage from "./pages/home";
 
 export default function Home() {
   return (
     
     <View style={styles.container}>
-          <AddNotes/>
-          <GetNotes/>
+      <HomePage/>
+          {/* <AddNotes/>
+          <GetNotes/> */}
     </View>
 
   )

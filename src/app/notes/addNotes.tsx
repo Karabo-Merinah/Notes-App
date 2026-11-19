@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Asterisk } from "lucide-react-native"
 import { useState } from "react"
-import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native"
+import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput } from "react-native"
 
 
 export default function addNotes() {
@@ -14,6 +14,7 @@ export default function addNotes() {
     const [notesError, setNotesError] = useState("")
 
 
+    //validate the form before saving
     const formValidation = () => {
 
         let isValid = true
@@ -26,6 +27,7 @@ export default function addNotes() {
         else {
             setTitleError("")
         }
+        //category validation
         if (category.trim() === "" || category.length === 0) {
             setCategoryError("Category is required")
             isValid = false
@@ -33,6 +35,8 @@ export default function addNotes() {
         else {
             setCategoryError("")
         }
+        //notes validation 
+
         if (notes.length === 0 || notes.trim() === "" || notes.length > 500) {
             setNotesError("Notes is required and should not be more than 500 characters.")
             isValid = false
@@ -45,18 +49,18 @@ export default function addNotes() {
         }
     }
 
+    //save the note to the storage
     const saveNote = async () => {
         try {
             //get saved notes
             const storedNotes = await AsyncStorage.getItem("notes")
-
             //if notes exist convert them into array,if not use empty array 
             let allNotes = []
             if (storedNotes !== null) {
                 allNotes = JSON.parse(storedNotes)
             }
 
-            //creating note 
+            //creating a new note 
             const newNote = {
                 id: Date.now().toString(),
                 title: title.trim(),
@@ -86,68 +90,92 @@ export default function addNotes() {
 
 
     return (
-        <View style={styles.form}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.form} keyboardShouldPersistTaps="handled">
+            <Text style={styles.heading}>Add notes</Text>
             <Text style={styles.formDescription}>Save your notes for later !</Text>
-            <Text style={styles.formLabels}>Title</Text>
-            <TextInput style={styles.formInput} value={title} onChangeText={setTitle} placeholder="Title(optional)" placeholderTextColor={'#717171'} />
-            {titleError !== "" && (
-                <Text style={styles.error}>{titleError}</Text>
-            )}
-            <Text style={styles.formLabels}>Notes <Asterisk size={10} color='red' /></Text>
-            <TextInput placeholder="Write your notes here " placeholderTextColor={'#717171'} value={notes} onChangeText={setNotes} multiline />
-            {notesError !== "" && (
-                <Text style={styles.error}>{notesError}</Text>
-            )}
-            <View style={styles.category_button}>
-                <Text style={styles.formLabels}>Category <Asterisk size={10} color='red' /></Text>
-                <TextInput style={styles.formInput} value={category} onChangeText={setCategory} placeholder="e.g Work,Study,Personal" placeholderTextColor={'#717171'} />
-                {categoryError !== "" && (
-                    <Text style={styles.error}>{categoryError}</Text>
-                )}
-                <Pressable style={styles.button} onPress={formValidation}>
-                    <Text style={styles.saveButton}>SAVE NOTES</Text>
-                </Pressable>
-            </View>
-        </View>
+            {/* Title */}
+            <Text style={styles.formLabels}>Title (Optional)</Text>
+            <TextInput style={styles.formInput} value={title} onChangeText={setTitle} placeholder="Enter note title" placeholderTextColor="#717171" maxLength={51} />
+            {titleError !== "" && <Text style={styles.error}>{titleError}</Text>}
+
+            {/* Notes */}
+            <Text style={styles.formLabels}>Notes <Asterisk size={10} color="red" /></Text>
+            <TextInput style={[styles.formInput, styles.notesInput]} value={notes} onChangeText={setNotes} placeholder="Write your notes here..." placeholderTextColor="#717171" multiline textAlignVertical="top" maxLength={501} />
+            {notesError !== "" && <Text style={styles.error}>{notesError}</Text>}
+
+            {/* Category */}
+            <Text style={styles.formLabels}>Category <Asterisk size={10} color="red" /></Text>
+            <TextInput style={styles.formInput} value={category} onChangeText={setCategory} placeholder="e.g. Work, Study, Personal" placeholderTextColor="#717171" />
+            {categoryError !== "" && <Text style={styles.error}>{categoryError}</Text>}
+
+            {/* Save button */}
+            <Pressable style={styles.button} onPress={formValidation}>
+                <Text style={styles.saveButton}>SAVE NOTES</Text>
+            </Pressable>
+
+        </ScrollView>
     )
 
 }
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#FDFDFD',
+        flex: 1
+    },
     form: {
-        justifyContent: 'center',
-        marginTop: 10,
-        padding: 20
+        padding: 20,
+        paddingBottom:40
+    },
+    heading:{
+        fontSize:28,
+        color:'#000000',
+        fontWeight:'bold',
+        marginBottom:8
     },
     formDescription: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginTop: 350,
+        fontSize: 16,
+        color:'#777777',
         marginBottom: 20
     },
     formLabels: {
-        fontSize: 16
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "#000000",
+        marginBottom: 8
     },
     formInput: {
         borderRadius: 9,
-        borderWidth: 1
+        borderWidth: 1,
+        borderColor: "#DDDDDD",
+        backgroundColor: "#FFFFFF",
+        paddingHorizontal: 12,
+        paddingVertical: 12,
+        fontSize: 15,
+        color: "#000000",
+        marginBottom: 20,
+        width: "100%"
+    },
+    notesInput: {
+        minHeight: 150
     },
     button: {
-
+        backgroundColor: "#FFCC00",
+        borderRadius: 9,
+        paddingVertical: 15,
+        alignItems: "center",
+        marginTop: 10,
+        width: "100%"
     },
     saveButton: {
-        backgroundColor: 'black',
-        color: '#FDFDFD',
-        textAlign: 'center',
-        borderRadius: 9,
-        maxWidth: 250,
-        height: 40,
-        padding: 10
-    },
-    category_button: {
-        gap: 20
+        color: "#000000",
+        fontWeight: "bold",
+        fontSize: 16
     },
     error: {
-        color: 'red'
+        color: "red",
+        fontSize: 13,
+        marginTop: -15,
+        marginBottom: 15
     }
 })
