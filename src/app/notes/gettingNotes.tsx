@@ -16,7 +16,7 @@ export default function getNotes() {
     const [categoryError, setCategoryError] = useState("")
     const [titleError, setTitleError] = useState("")
     const [searchTerm, setSearchTerm] = useState("")
-
+    const [sortOrder, setSortOrder] = useState("descending")
 
     //saved notes from storage
     const fetchNotes = async () => {
@@ -112,6 +112,18 @@ export default function getNotes() {
         return true
     })
 
+    //sorting the notes with the date created either in ascending order or descending order.
+    const sortNotes = searchNotes.slice().sort((a, b) => {
+        //sort notes in ascending order 
+        if (sortOrder === "ascending") {
+            return a.createdAt.localeCompare(b.createdAt)
+        }
+        //sort the notes in descending order
+        else {
+            return b.createdAt.localeCompare(a.createdAt)
+        }
+    })
+
     const saveNotesChanges = async () => {
         try {
             let isValid = true
@@ -180,8 +192,21 @@ export default function getNotes() {
                 <Text style={styles.button}>View all notes </Text>
             </Pressable>
             <TextInput value={searchTerm} onChangeText={setSearchTerm} placeholder="Search your notes here " placeholderTextColor={'#717171'} />
+            <View>
+                <View style={styles.sortTitle}>
+                <Text>Sort by </Text>
+                <View style={styles.sortOptions}>
+                <Pressable onPress={() => setSortOrder("ascending")}>
+                    <Text>Oldest</Text>
+                </Pressable>
+                </View>
+                <Pressable onPress={() => setSortOrder("descending")}>
+                    <Text>Newest</Text>
+                </Pressable>
+                </View>
+            </View>
             {/* display the saved notes from list  */}
-            <FlatList data={searchNotes} keyExtractor={(item) => item.id} renderItem={({ item }) => (
+            <FlatList data={sortNotes} keyExtractor={(item) => item.id} renderItem={({ item }) => (
                 <View style={styles.notes}>
                     {/* show the editing form for the selected note id  */}
                     {findId === item.id ? (
@@ -284,5 +309,11 @@ const styles = StyleSheet.create({
     cancel_save: {
         flexDirection: 'row',
         gap: 10
+    },
+    sortTitle:{
+        flexDirection:'row'
+    },
+    sortOptions:{
+        flexDirection:'column'
     }
 })
