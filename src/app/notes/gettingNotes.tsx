@@ -15,6 +15,8 @@ export default function getNotes() {
     const [contentError, setContentError] = useState("")
     const [categoryError, setCategoryError] = useState("")
     const [titleError, setTitleError] = useState("")
+    const [searchTerm, setSearchTerm] = useState("")
+
 
     //saved notes from storage
     const fetchNotes = async () => {
@@ -91,6 +93,25 @@ export default function getNotes() {
         ])
     }
 
+    //filters the notes based on the search term 
+    const searchNotes = savedNotes.filter((notes) => {
+        //split the search term with empty space to retrieve words
+        const searchWords = searchTerm.toLowerCase().trim().split(" ")
+
+        //formulates the search 
+        const text = `${notes.title || ""} ${notes.content} ${notes.category}`.toLowerCase()
+
+        //loops through search words
+        for (let word of searchWords) {
+            //if a word is not found then we exclude the note
+            if (!text.includes(word)) {
+                return false
+            }
+        }
+        //if all words are matched take the note
+        return true
+    })
+
     const saveNotesChanges = async () => {
         try {
             let isValid = true
@@ -158,8 +179,9 @@ export default function getNotes() {
             <Pressable onPress={fetchNotes}>
                 <Text style={styles.button}>View all notes </Text>
             </Pressable>
+            <TextInput value={searchTerm} onChangeText={setSearchTerm} placeholder="Search your notes here " placeholderTextColor={'#717171'} />
             {/* display the saved notes from list  */}
-            <FlatList data={savedNotes} keyExtractor={(item) => item.id} renderItem={({ item }) => (
+            <FlatList data={searchNotes} keyExtractor={(item) => item.id} renderItem={({ item }) => (
                 <View style={styles.notes}>
                     {/* show the editing form for the selected note id  */}
                     {findId === item.id ? (
@@ -180,12 +202,14 @@ export default function getNotes() {
                             {categoryError !== "" && (
                                 <Text style={styles.error}>{categoryError}</Text>
                             )}
-                            <Pressable style={styles.editButton} onPress={saveNotesChanges}>
-                                <Text style={styles.editText}>Save Changes</Text>
-                            </Pressable>
-                            <Pressable onPress={() => setFindId("")}>
-                                <Text>Cancel</Text>
-                            </Pressable>
+                            <View style={styles.cancel_save}>
+                                <Pressable onPress={() => setFindId("")}>
+                                    <Text>Cancel</Text>
+                                </Pressable>
+                                <Pressable style={styles.editButton} onPress={saveNotesChanges}>
+                                    <Text style={styles.editText}>Save Changes</Text>
+                                </Pressable>
+                            </View>
                         </View>
                     ) : (
                         <View>
@@ -201,18 +225,29 @@ export default function getNotes() {
                             </Pressable>
                         </View>
                     )}
+
                 </View>
+
             )}
                 ListEmptyComponent={
                     <View>
-                        <Text style={styles.notes}>You currently have no notes saved.</Text>
-                        <StickyNoteX size={100} aria-label="delete" />
-                        <AddNotes />
+                        {searchTerm.trim() !== "" ? (
+                            //show when search has no matching notes 
+                            <Text>No matching notes found for {searchTerm}</Text>
+                        ) : (
+                            //show empty state when user doesn't have any notes saved.
+                            <View>
+                                <Text style={styles.notes}>You currently have no notes saved.</Text>
+                                <StickyNoteX size={100} aria-label="delete" />
+                                <AddNotes />
+                            </View>
+                        )}
                     </View>
                 }
             />
         </View>
     )
+
 }
 
 const styles = StyleSheet.create({
@@ -245,5 +280,9 @@ const styles = StyleSheet.create({
     },
     error: {
         color: 'red'
+    },
+    cancel_save: {
+        flexDirection: 'row',
+        gap: 10
     }
 })
