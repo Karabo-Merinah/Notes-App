@@ -1,4 +1,3 @@
-import { Redirect } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import HomePage from "./pages/home";
 
