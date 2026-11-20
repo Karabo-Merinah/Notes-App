@@ -144,50 +144,57 @@ export default function Home() {
             {/* display categories in a single vertical list */}
             <FlatList data={categories} style={styles.categoryList} keyExtractor={(item) => item.toLowerCase()} contentContainerStyle={styles.listContent} keyboardShouldPersistTaps="handled" renderItem={({ item }) => {
 
-                    // Count all saved notes belonging to this category
-                    const totalCount = notes.filter((note) => note.category.trim().toLowerCase() === item.toLowerCase()).length
+                // Count all saved notes belonging to this category
+                const totalCount = notes.filter((note) => note.category.trim().toLowerCase() === item.toLowerCase()).length
+                // Count only notes matching the user's search
+                const matchCount = sortedNotes.filter((note) => note.category.trim().toLowerCase() === item.toLowerCase()).length
+                return (
+                    <View style={[styles.cardShadow, { backgroundColor: getCategoryColor(item) }]}>
+                        <Pressable style={styles.card} onPress={() => router.push({ pathname: "/categories/[category]", params: { category: item, search: searchTerm, sort: sortOrder } })}>
+                            <View style={styles.categoryIcon}>
+                                <NotebookPen size={23} color="#000000" />
+                            </View>
+                            <View style={styles.cardContent}>
+                                <Text style={styles.category}>{item}</Text>
+                                <Text style={styles.count}>{totalCount} {totalCount === 1 ? "note" : "notes"}</Text>
+                                {searchTerm.trim() !== "" && <Text style={styles.matchText}>{matchCount} {matchCount === 1 ? "match" : "matches"} found</Text>}
+                            </View>
 
-                    // Count only notes matching the user's search
-                    const matchCount = sortedNotes.filter((note) => note.category.trim().toLowerCase() === item.toLowerCase()).length
-
-                    return (
-                        <View style={[styles.cardShadow, { backgroundColor: getCategoryColor(item) }]}>
-                            <Pressable style={styles.card} onPress={() => router.push({ pathname: "/categories/[category]", params: { category: item, search: searchTerm, sort: sortOrder } })}>
-                                <View style={styles.categoryIcon}>
-                                    <NotebookPen size={23} color="#000000" />
-                                </View>
-
-                                <View style={styles.cardContent}>
-                                    <Text style={styles.category}>{item}</Text>
-                                    <Text style={styles.count}>{totalCount} {totalCount === 1 ? "note" : "notes"}</Text>
-                                    {searchTerm.trim() !== "" && <Text style={styles.matchText}>{matchCount} {matchCount === 1 ? "match" : "matches"} found</Text>}
-                                </View>
-
-                                <ChevronRight size={20} color="#555555" />
-                            </Pressable>
-                        </View>
-                    )
-                }}
+                            <ChevronRight size={20} color="#555555" />
+                        </Pressable>
+                    </View>
+                )
+            }}
                 ListEmptyComponent={
                     <View style={styles.emptyContainer}>
                         {searchTerm.trim() !== "" ? (
                             <>
                                 {/* display when no notes match the search */}
-                                <Image source={require("../../../assets/illustrations/search_empty.png")} style={styles.emptyImage} resizeMode="contain" />
-                                <Text style={styles.emptyHeading}>No results found</Text>
-                                <Text style={styles.empty}>Couldn't find any notes matching "{searchTerm}".</Text>
+                                <Image  source={require("../../../assets/illustrations/search_empty.png")} style={styles.emptyImage} resizeMode="contain" />
+                                <Text style={styles.emptyHeading}>No results found!</Text>
+                                <Text style={styles.empty}>  Couldn't find any notes matching "{searchTerm}".  </Text>
                             </>
                         ) : (
                             <>
                                 {/* display when the user has no saved notes */}
-                                <Image source={require("../../../assets/illustrations/notes_emptystate.png")} style={styles.emptyImage} resizeMode="contain" />
-                                <Text style={styles.emptyHeading}>Your notebook is empty</Text>
-                                <Text style={styles.empty}>Every great idea starts with a note. Create your first one!</Text>
-                                <Pressable style={styles.createButton} onPress={() => router.push("/notes/addNotes")}><Plus size={20} color="#000000" /><Text style={styles.createText}>Create Note</Text></Pressable>
+                                <Image source={require("../../../assets/illustrations/notes_emptystate.png")} style={styles.emptyImage}  resizeMode="contain" />
+
+                                <Text style={styles.emptyHeading}> Your notebook is empty </Text>
+                                <Text style={styles.empty}> Every great idea starts with a note.
+                                    Create your first one!
+                                </Text>
+
+                                <View style={styles.createButtonShadow}>
+                                    <Pressable  style={styles.createButton}  onPress={() => router.push("/notes/addNotes")}>
+                                        <Plus size={20} color={colors.text} />
+                                        <Text style={styles.createText}>Create Note</Text>
+                                    </Pressable>
+                                </View>
                             </>
                         )}
                     </View>
                 }
+
             />
 
             {/* display the bottom navigation */}
@@ -394,15 +401,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         paddingHorizontal: 20,
-        paddingBottom: 30
+        paddingVertical: 30
     },
     emptyImage: {
         width: 200,
         height: 200,
-        marginBottom: 5
+        marginBottom: 12
     },
     emptyHeading: {
-        fontSize: 21,
+        fontSize: 23,
         fontWeight: "bold",
         color: colors.text,
         textAlign: "center",
@@ -412,18 +419,27 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: colors.secondaryText,
         textAlign: "center",
-        lineHeight: 21,
-        marginBottom: 20
+        lineHeight: 23,
+        marginBottom: 20,
+        maxWidth: 280
     },
     createButton: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        gap: 8,
+        gap: 10,
         backgroundColor: colors.primary,
-        paddingHorizontal: 25,
-        paddingVertical: 14,
+        paddingHorizontal: 28,
+        paddingVertical: 15,
+        borderWidth: 1,
+        borderColor: colors.border,
         borderRadius: 12
+    },
+    createButtonShadow: {
+        backgroundColor: colors.text,
+        borderRadius: 12,
+        paddingRight: 5,
+        paddingBottom: 5
     },
     createText: {
         fontSize: 15,

@@ -93,7 +93,6 @@ export default function Profile() {
         try {
             //remove the logged in user data 
             await AsyncStorage.removeItem("user")
-
             //redirect the user to login page 
             router.replace("/authenticationPages/login")
         }
@@ -120,7 +119,6 @@ export default function Profile() {
 
                 <View style={styles.headerText}>
                     <Text style={styles.heading}>My Profile</Text>
-                    <View style={styles.headingUnderline} />
                 </View>
             </View>
             <ScrollView contentContainerStyle={styles.profile} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
@@ -195,13 +193,6 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: "bold",
         color: colors.text
-    },
-    headingUnderline: {
-        width: 80,
-        height: 5,
-        borderRadius: 4,
-        backgroundColor: colors.primary,
-        marginTop: 4
     },
     profile: {
         paddingHorizontal: 20,
