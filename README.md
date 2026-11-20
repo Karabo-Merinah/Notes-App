@@ -1,56 +1,123 @@
-# Welcome to your Expo app 👋
+# Notes Application
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A mobile notes application built with **React Native, Expo, and TypeScript**. The application allows users to capture ideas, organise notes into categories, and easily find notes using search and sorting features.
 
-## Get started
+## APK Download (Google Drive)
 
-1. Install dependencies
+Download and install the Android APK using the link below:
 
-   ```bash
-   npm install
-   ```
+[Download APK](https://drive.google.com/drive/folders/1q2l3ABR-f16txAxU--lApmx44Qga6KLt?usp=sharing)
 
-2. Start the app
+## Features
 
-   ```bash
-   npx expo start
-   ```
+- **Onboarding:** Welcome screen with an illustration and navigation to Login or Register.
+- **Registration:** Create an account with email, username, and password validation.
+- **Login:** Sign in using registered account credentials.
+- **Password Visibility:** Show or hide passwords using the eye icon.
+- **Password Hashing:** Hash passwords using bcryptjs before saving.
+- **Notes Management:** Create, view, edit, and delete notes.
+- **Categories:** Organise notes into categories and view notes within each category.
+- **Search:** Search notes by title, content, or category.
+- **Sorting:** Sort notes from newest to oldest or oldest to newest.
+- **Profile:** View and update username information and log out.
+- **Empty States:** Display illustrations when no notes or search results are available.
+- **Local Storage:** Save application data locally using AsyncStorage.
 
-In the output, you'll find options to open the app in a
+## Technologies Used
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+React Native : Building the mobile user interface 
+ TypeScript : Adding type safety 
+ Expo : Developing and running the application 
+ Expo Router : Navigating between screens 
+ AsyncStorage : Storing users, sessions, and notes locally 
+ bcryptjs : Hashing and verifying passwords 
+ expo-crypto : Providing secure random bytes for bcryptjs 
+ lucide-react-native :  Displaying icons 
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Screens and Components
 
-## Get a fresh project
 
-When you're ready, run:
+ Onboarding : Introduces the application and provides Login and Register navigation 
+
+  Register : Validates registration details and creates a new account 
+ Login : Verifies user credentials and starts a local session 
+ Home : Displays categories, note totals, search, and sorting options 
+ Category Notes : Displays notes belonging to a selected category 
+ Add Note : Allows users to create notes 
+ Profile : Displays user information, supports username editing, and logout 
+ CustomInput : Reusable input component with password visibility functionality 
+
+## User Interface
+
+The application uses a clean and playful design 
+
+## Getting Started
+
+### Prerequisites
+
+Before running the application, ensure you have:
+
+- Node.js and npm installed.
+- Expo Go installed on a supported mobile device or an Android emulator.
+- Git installed.
+
+### Installation
+
+**1. Clone the repository**
 
 ```bash
-npm run reset-project
+git https://github.com/Karabo-Merinah/Notes-App.git
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+**2. Navigate to the project directory**
 
-### Other setup steps
+```bash
+cd Notes-Application
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+**3. Install dependencies**
 
-## Learn more
+```bash
+npm install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+**4. Start the development server**
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npx expo start
+```
 
-## Join the community
+**5. Run the application**
 
-Join our community of developers creating universal apps.
+Scan the QR code using Expo Go or follow the terminal instructions to launch the application on an emulator.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Data Storage
+
+The application uses AsyncStorage to store information locally on the device.
+
+- Registered user information.
+- Logged-in user session.
+- Notes and their categories.
+
+Passwords are hashed using bcryptjs before being stored.
+
+## What I Have Learned
+
+During the development of this application I learnt :
+
+- Navigating between screens using Expo Router.
+- Storing and retrieving data using AsyncStorage.
+- Implementing CRUD operations for notes.
+- Filtering and sorting data based on user input.
+- Validating registration forms and handling errors.
+- Implementing password visibility toggles.
+- Hashing passwords using bcryptjs and expo-crypto.
+- Creating reusable components.
+- Applying consistent styling using React Native StyleSheet.
+
+
+## Future Improvements
+
+- Implement backend authentication and database integration.
+- Implement secure session management.
+- Add reminders and notifications for notes.
