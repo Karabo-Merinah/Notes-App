@@ -1,12 +1,13 @@
 import { Redirect } from "expo-router";
 import { StyleSheet, View } from "react-native";
+import HomePage from "./pages/home";
 
 export default function Home() {
   return (
     
     <View style={styles.container}>
-      return <Redirect href="/onboarding"/>
-      {/* <HomePage/> */}
+      {/* return <Redirect href="/onboarding"/> */}
+      <HomePage/>
           {/* <AddNotes/>
           <GetNotes/> */}
     </View>
